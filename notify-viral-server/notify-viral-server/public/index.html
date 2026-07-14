@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Notify Viral</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050004; --panel:#12040d; --line:#3a0f2c;
+    --pink1:#ff8a5b; --pink2:#ff2d95; --pink3:#a020c0;
+    --white:#f5f2f4; --dim:#8a7f87; --ok:#00e6a8; --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:radial-gradient(ellipse 800px 500px at 50% -10%, rgba(255,45,149,0.18), transparent 60%), var(--bg);
+    color:var(--white); font-family:'Poppins',sans-serif; min-height:100vh; padding-bottom:80px;
+  }
+  header{text-align:center; padding:40px 20px 16px;}
+  .logo-wrap{display:flex; justify-content:center; margin-bottom:6px;}
+  .bell-icon{width:54px; height:54px;}
+  .word-notify{font-weight:900; font-size:34px; letter-spacing:1px; color:var(--white); text-shadow:0 0 18px rgba(255,255,255,0.25); margin:0; line-height:1;}
+  .word-viral{
+    font-weight:800; font-size:16px; letter-spacing:6px; margin:6px 0 0;
+    background:linear-gradient(90deg, var(--pink1), var(--pink2) 55%, var(--pink3));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    display:flex; align-items:center; justify-content:center; gap:12px;
+  }
+  .word-viral::before, .word-viral::after{content:""; height:1px; width:34px; background:linear-gradient(90deg, transparent, var(--pink2));}
+  .word-viral::after{background:linear-gradient(90deg, var(--pink2), transparent);}
+  .sub{color:var(--dim); font-size:13px; max-width:380px; margin:16px auto 0; line-height:1.6;}
+  main{max-width:600px; margin:0 auto; padding:0 16px;}
+  .push-banner{
+    background:linear-gradient(90deg, rgba(255,45,149,0.14), rgba(160,32,192,0.14));
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    font-size:12.5px; color:var(--dim); margin:20px 0;
+  }
+  .push-banner b{color:var(--white);}
+  .push-banner button{white-space:nowrap;}
+  .add-card{
+    background:linear-gradient(160deg, var(--panel), #0a0208);
+    border:1px solid var(--line); border-radius:var(--radius); padding:20px;
+    margin:18px 0; box-shadow:0 0 40px -20px rgba(255,45,149,0.5);
+  }
+  .add-card h2{font-size:16px; font-weight:700; margin:0 0 4px;}
+  .add-card .desc{font-size:12px; color:var(--dim); margin-bottom:16px;}
+  label{display:block; font-size:10.5px; font-family:'JetBrains Mono',monospace; color:var(--dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;}
+  input[type=text]{
+    width:100%; background:#0a0208; border:1px solid var(--line); border-radius:10px;
+    padding:12px 13px; color:var(--white); font-size:14px; font-family:'Poppins',sans-serif; margin-bottom:14px;
+  }
+  input[type=text]::placeholder{color:#5a4e56;}
+  input[type=text]:focus{outline:2px solid var(--pink2); outline-offset:1px;}
+  button{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:13.5px; letter-spacing:0.3px;
+    border:none; border-radius:10px; padding:13px 16px; cursor:pointer;
+    transition:transform .08s ease, filter .15s ease;
+  }
+  button:active{transform:scale(0.97);}
+  .btn-primary{background:linear-gradient(90deg, var(--pink1), var(--pink2), var(--pink3)); color:#1a0010; width:100%;}
+  .btn-primary:hover{filter:brightness(1.1);}
+  .btn-small{background:linear-gradient(90deg, var(--pink2), var(--pink3)); color:#fff; padding:9px 14px; font-size:12px;}
+  .btn-ghost{background:transparent; color:var(--dim); border:1px solid var(--line);}
+  .btn-ghost:hover{color:var(--white); border-color:var(--pink2);}
+  .note{
+    background:#0a0208; border:1px solid var(--line); border-left:3px solid var(--pink2); border-radius:10px;
+    padding:12px 14px; font-size:12px; color:var(--dim); line-height:1.6; margin-bottom:22px;
+  }
+  .note b{color:var(--white);}
+  .section-title{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--dim); margin:24px 0 10px; display:flex; align-items:center; gap:8px;
+  }
+  .section-title::after{content:""; flex:1; height:1px; background:var(--line);}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px; margin-bottom:12px; display:flex; gap:14px; align-items:center;}
+  .avatar{width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg, var(--pink1), var(--pink3)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#1a0010; flex-shrink:0;}
+  .card-body{flex:1; min-width:0;}
+  .card-name{font-weight:700; font-size:15px; margin-bottom:2px;}
+  .card-latest{font-size:13px; color:var(--dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .card-latest a{color:var(--white); text-decoration:none;}
+  .card-latest a:hover{color:var(--pink2);}
+  .card-meta{font-family:'JetBrains Mono',monospace; font-size:10px; color:#5a4e56; margin-top:4px;}
+  .card-actions{display:flex; flex-direction:column; gap:6px; flex-shrink:0;}
+  .icon-btn{background:#0a0208; border:1px solid var(--line); color:var(--dim); border-radius:8px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px;}
+  .icon-btn:hover{color:var(--white); border-color:var(--pink2);}
+  .empty{text-align:center; padding:34px 16px; color:var(--dim); font-size:13.5px; border:1px dashed var(--line); border-radius:var(--radius);}
+  .status-bar{
+    position:fixed; bottom:0; left:0; right:0; background:#000; border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); padding:10px 16px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .status-dot{width:7px; height:7px; border-radius:50%; background:var(--ok); display:inline-block; margin-right:6px; animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.3;}}
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-wrap">
+      <svg class="bell-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="20" y1="10" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ff8a5b"/><stop offset="0.5" stop-color="#ff2d95"/><stop offset="1" stop-color="#a020c0"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 12C33 12 20 24 20 44v10c0 8-5 14-8 18h76c-3-4-8-10-8-18V44c0-20-13-32-30-32z" fill="url(#g1)"/>
+        <path d="M40 78c0 6 4 10 10 10s10-4 10-10" stroke="url(#g1)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1 class="word-notify">NOTIFY</h1>
+    <div class="word-viral">VIRAL</div>
+    <div class="sub">Acompanhe páginas do TikTok e receba um aviso no celular assim que sair vídeo novo — mesmo com o app fechado.</div>
+  </header>
+
+  <main>
+    <div class="push-banner" id="pushBanner">
+      <span id="pushBannerText"><b>Passo 1:</b> ative as notificações push neste aparelho</span>
+      <button class="btn-small" id="enablePushBtn">Ativar</button>
+    </div>
+
+    <div class="add-card">
+      <h2>Adicionar página do TikTok</h2>
+      <div class="desc">Cole a URL do perfil e dê um apelido curto pra ela.</div>
+      <label for="urlInput">URL da página do TikTok</label>
+      <input type="text" id="urlInput" placeholder="Ex: https://www.tiktok.com/@geglobo">
+      <label for="nameInput">Apelido</label>
+      <input type="text" id="nameInput" placeholder="Ex: GE">
+      <button class="btn-primary" id="addBtn">Adicionar e monitorar</button>
+    </div>
+
+    <div class="note">
+      <b>Importante:</b> o servidor checa sozinho a cada poucos minutos, mesmo sem o app aberto, e te notifica por push.
+      Ainda assim, o TikTok pode bloquear a leitura de algum perfil sem aviso — não existe garantia 100% gratuita disso,
+      já que não é um recurso oficial deles. No iPhone, pra notificação funcionar com o app fechado, é preciso primeiro
+      tocar em Compartilhar → <b>Adicionar à Tela de Início</b>.
+    </div>
+
+    <div class="section-title">Páginas monitoradas</div>
+    <div id="sourcesList"></div>
+  </main>
+
+  <div class="status-bar">
+    <span><span class="status-dot"></span><span id="statusText">Pronto</span></span>
+    <button class="btn-ghost" id="checkAllBtn" style="padding:6px 10px; font-size:10px;">Verificar agora</button>
+  </div>
+
+<script>
+function escapeHtml(str){ const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+function urlBase64ToUint8Array(base64String){
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g,'+').replace(/_/g,'/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+async function setupPush(){
+  if(!('serviceWorker' in navigator) || !('PushManager' in window)){
+    document.getElementById('pushBannerText').innerHTML = 'Este navegador não suporta notificações push.';
+    document.getElementById('enablePushBtn').style.display = 'none';
+    return;
+  }
+  const reg = await navigator.serviceWorker.register('/sw.js');
+  const existing = await reg.pushManager.getSubscription();
+  if(existing){
+    document.getElementById('pushBanner').style.display = 'none';
+    return;
+  }
+  document.getElementById('enablePushBtn').addEventListener('click', async () => {
+    const perm = await Notification.requestPermission();
+    if(perm !== 'granted'){
+      document.getElementById('pushBannerText').textContent = 'Permissão negada — ative nas configurações do navegador.';
+      return;
+    }
+    const { key } = await fetch('/api/vapid-public-key').then(r => r.json());
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(key)
+    });
+    await fetch('/api/subscribe', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(sub)
+    });
+    document.getElementById('pushBanner').style.display = 'none';
+  });
+}
+
+async function loadSources(){
+  const sources = await fetch('/api/sources').then(r => r.json());
+  render(sources);
+}
+
+async function addSource(){
+  const url = document.getElementById('urlInput').value.trim();
+  const name = document.getElementById('nameInput').value.trim();
+  if(!url || !name) return;
+  document.getElementById('addBtn').textContent = 'Adicionando...';
+  await fetch('/api/sources', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name, url})
+  });
+  document.getElementById('urlInput').value=''; document.getElementById('nameInput').value='';
+  document.getElementById('addBtn').textContent = 'Adicionar e monitorar';
+  await loadSources();
+}
+
+async function removeSource(id){
+  await fetch('/api/sources/' + id, {method:'DELETE'});
+  await loadSources();
+}
+window.removeSource = removeSource;
+
+async function checkNow(){
+  document.getElementById('statusText').textContent = 'Verificando...';
+  const sources = await fetch('/api/check-now', {method:'POST'}).then(r => r.json());
+  render(sources);
+  document.getElementById('statusText').textContent = 'Última verificação: ' + new Date().toLocaleTimeString('pt-BR');
+}
+
+function render(sources){
+  const list = document.getElementById('sourcesList');
+  if(sources.length === 0){
+    list.innerHTML = '<div class="empty">Nenhuma página adicionada ainda.<br>Cole a URL de um perfil do TikTok acima.</div>';
+    return;
+  }
+  list.innerHTML = sources.map(s => `
+    <div class="card">
+      <div class="avatar">${escapeHtml(s.name.slice(0,2).toUpperCase())}</div>
+      <div class="card-body">
+        <div class="card-name">${escapeHtml(s.name)}</div>
+        <div class="card-latest">${s.error ? s.error : (s.lastLink ? `<a href="${s.lastLink}" target="_blank">${escapeHtml(s.lastTitle || 'aguardando...')}</a>` : 'aguardando primeira checagem...')}</div>
+        <div class="card-meta">${s.lastChecked ? 'verificado ' + new Date(s.lastChecked).toLocaleTimeString('pt-BR') : 'ainda não verificado'}</div>
+      </div>
+      <div class="card-actions">
+        <div class="icon-btn" onclick="removeSource('${s.id}')" title="Remover">✕</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('addBtn').addEventListener('click', addSource);
+document.getElementById('checkAllBtn').addEventListener('click', checkNow);
+
+setupPush();
+loadSources();
+setInterval(loadSources, 30000);
+</script>
+</body>
+</html>
